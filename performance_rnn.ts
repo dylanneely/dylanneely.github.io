@@ -1,4 +1,5 @@
-/* Copyright 2017 Google Inc. All Rights Reserved.
+/*
+Copyright 2017 Google Inc. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -11,6 +12,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+--Modifications made for Slonimsky Dreams
 ==============================================================================*/
 import * as tf from '@tensorflow/tfjs-core';
 import * as p5 from 'p5';
@@ -426,6 +429,8 @@ setTimeout(resetRnnRepeatedly, RESET_RNN_FREQUENCY_MS);
 
 // let pg: p5;
 
+
+
 let sketch = function (p: p5) {
   let width = p.windowWidth;
   let height = p.windowHeight;
@@ -449,5 +454,4 @@ let sketch = function (p: p5) {
     }
   }
 }
-
 new p5(sketch)
