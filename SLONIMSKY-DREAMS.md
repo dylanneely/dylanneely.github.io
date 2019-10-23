@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: template
 title: "Thoughts"
 permalink: /dylanneely.github.io/thoughts/
 ---
