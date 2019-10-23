@@ -331,11 +331,13 @@ let sketch = function (p) {
     p.draw = function () {
         p.background(0, 12);
         p.textAlign(p.RIGHT);
-        p.textSize(20);
-        p.text("\"If the demands and situations of the electronic age change the function and relevance of the composer to society, they will also change the categories of judgment by which we determine the matter of artistic responsibility. By far the most important electronic contribution of the arts is the creation of a new and paradoxical condition of privacy . . . Whatever else we would predict about the electronic age, all the symptoms suggest a return to some degree of mythic anonymity within the social-artistic structure.\" - Glenn Gould", (p.windowWidth * 0.5 - 10), 10, p.windowWidth * 0.5, 200);
+        p.textSize(18);
+        p.textFont('Helvetica');
+        p.fill(200, 200, 255);
+        p.text("\"If the demands and situations of the electronic age change the function and relevance of the composer to society, they will also change the categories of judgment by which we determine the matter of artistic responsibility. By far the most important electronic contribution of the arts is the creation of a new and paradoxical condition of privacy . . . Whatever else we would predict about the electronic age, all the symptoms suggest a return to some degree of mythic anonymity within the social-artistic structure.\" - Glenn Gould", (p.windowWidth * 0.5), 20, (p.windowWidth * 0.5 - 20), 200);
         p.textAlign(p.LEFT);
         p.textSize(60);
-        p.text("Slonimsky Dreams", 10, 70);
+        p.text("Slonimsky Dreams", 20, 70);
         let xoff = 0;
         for (let x = 0; x < width; x++) {
             xoff += 0.005;
