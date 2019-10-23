@@ -1,4 +1,4 @@
 name: Slonimsky Dreams
 markdown: kramdown
 theme: jekyll-theme-slate
-permalink: /blog/:title
+permalink: /blog/:year/:month/:day/:title
