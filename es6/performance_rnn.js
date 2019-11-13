@@ -323,21 +323,32 @@ setTimeout(resetRnnRepeatedly, RESET_RNN_FREQUENCY_MS);
 let sketch = function (p) {
     let width = p.windowWidth;
     let height = p.windowHeight;
+    let soundOn = false;
     p.setup = function () {
         p.createCanvas(width, height);
         p.frameRate(30);
         p.angleMode(p.DEGREES);
     };
+    p.mousePressed = function () { soundOn = true; };
     p.draw = function () {
         p.background(0, 12);
         p.textAlign(p.RIGHT);
         p.textSize(18);
         p.textFont('Helvetica');
         p.fill(200, 200, 255);
-        p.text("\"If the demands and situations of the electronic age change the function and relevance of the composer to society, they will also change the categories of judgment by which we determine the matter of artistic responsibility. By far the most important electronic contribution of the arts is the creation of a new and paradoxical condition of privacy . . . Whatever else we would predict about the electronic age, all the symptoms suggest a return to some degree of mythic anonymity within the social-artistic structure.\" - Glenn Gould", (p.windowWidth * 0.5), 20, (p.windowWidth * 0.5 - 20), 200);
+        p.text("\"If the demands and situations of the electronic age change the function and relevance of the composer to society, they will also change the categories of judgment by which we determine the matter of artistic responsibility. By far the most important electronic contribution of the arts is the creation of a new and paradoxical condition of privacy . . . Whatever else we would predict about the electronic age, all the symptoms suggest a return to some degree of mythic anonymity within the social-artistic structure.\" - Glenn Gould", (width * 0.5), 20, (width * 0.5 - 20), 200);
         p.textAlign(p.LEFT);
         p.textSize(60);
         p.text("Slonimsky Dreams", 20, 70);
+        p.textAlign(p.LEFT);
+        p.textSize(20);
+        if (!soundOn) {
+            p.text("Click anywhere to begin the music", 20, 140);
+        }
+        else {
+            p.text("", 20, 140);
+        }
+        ;
         let xoff = 0;
         for (let x = 0; x < width; x++) {
             xoff += 0.005;
