@@ -121,9 +121,17 @@ function record() {
   recorder.ondataavailable = evt => chunks.push(evt.data);
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
-  //audio.src = URL.createObjectURL(blob);
+  audio.src = URL.createObjectURL(blob);
+  }
+}
+
+function recordmic() {
+  const chunks = [];
   var reader = new FileReader();
-  reader.readAsArrayBufer(blob);
+  recorder.start();
+  recorder.ondataavailable = evt => chunks.push(evt.data);
+  recorder.onstop = evt => {
+  let blob = new Blob(chunks);
   actx.decodeAudioData(this.result).then(function(buffer) {
     console.log(buffer);
     buf_list[8] = "User Sound";
@@ -132,7 +140,9 @@ function record() {
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
     })
   }
+  reader.readAsArrayBufer(blob);
 }
+
 //LOADS SOUND
 load.onchange = function() {
   var sound = document.getElementById("sound");
@@ -267,7 +277,7 @@ recordMic.on('change',async function(v) {
     const meter = new Tone.Meter();
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
-    record();
+    recordmic();
 
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
