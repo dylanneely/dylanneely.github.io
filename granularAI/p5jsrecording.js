@@ -124,23 +124,6 @@ function record() {
   audio.src = URL.createObjectURL(blob);
   }
 }
-function recordmic() {
-  const chunks = [];
-  var reader = new FileReader();
-  recorder.start();
-  recorder.ondataavailable = evt => chunks.push(evt.data);
-  recorder.onstop = evt => {
-  let blob = new Blob(chunks);
-  actx.decodeAudioData(this.result).then(function(buffer) {
-    console.log(buffer);
-    buf_list[8] = "User Sound";
-    dropdown.defineOptions(Object.values(buf_list));
-    userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
-    dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
-    })
-  }
-  reader.readAsArrayBuffer(blob);
-}
 
 //LOADS SOUND
 load.onchange = function() {
@@ -269,6 +252,24 @@ let recordMic = new Nexus.TextButton('#recordmic', {
     'alternateText': 'Stop Recording'
 })
 
+// function recordmic() {
+//   const chunks = [];
+//   var reader = new FileReader();
+//   recorder.start();
+//   recorder.ondataavailable = evt => chunks.push(evt.data);
+//   recorder.onstop = evt => {
+//   let blob = new Blob(chunks);
+//   actx.decodeAudioData(this.result).then(function(buffer) {
+//     console.log(buffer);
+//     buf_list[8] = "User Sound";
+//     dropdown.defineOptions(Object.values(buf_list));
+//     userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
+//     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
+//     })
+//   }
+//   reader.readAsArrayBuffer(blob);
+// }
+
 recordMic.on('change',async function(v) {
   if (v == true) {
     await Tone.start();
@@ -277,8 +278,9 @@ recordMic.on('change',async function(v) {
     const meter = new Tone.Meter();
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
-    //console.log("mic started");
-    recordmic();
+    console.log("mic started");
+    record();
+
 
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
