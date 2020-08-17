@@ -279,7 +279,7 @@ recordMic.on('change',async function(v) {
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
     //console.log("mic started");
-    recordmic();
+    //recordmic();
 
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
