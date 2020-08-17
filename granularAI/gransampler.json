@@ -1,6 +1,6 @@
 [
     {
-      "origin": ["https://www.gebrauchsmusik.com/"],
+      "origin": ["https://www.gebrauchsmusik.com/", "http://dylanneely.github.io/"]
       "method": ["GET"],
       "responseHeader": ["Access-Control-Allow-Origin"],
       "maxAgeSeconds": 3600

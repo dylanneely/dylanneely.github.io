@@ -53,9 +53,9 @@ for (synth in synthList) {
      synthList[synth] = new Tone.PolySynth(Tone.FMSynth);
      synthList[synth].set({
 	      envelope: {
-		        attack: 0.08,
+		        attack: 0.02,
             decay: 0.25,
-            sustain: 0.5,
+            sustain: 0.8,
             release: 0.5
 	         }
          })
@@ -74,7 +74,7 @@ verb = new Tone.Reverb(4).toDestination();
 const pingPong = new Tone.PingPongDelay("4n", 0.5);
 
 const filter = new Tone.Filter(1500, "lowpass");
-const synthFilter = new Tone.Filter(5000, "lowpass");
+const synthFilter = new Tone.Filter(2000, "lowpass");
 
 // const grainBusGain = new Tone.Gain(0).toDestination();
 // const synthBusGain = new Tone.Gain(0).toDestination(); not working
@@ -122,7 +122,16 @@ function record() {
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
   audio.src = URL.createObjectURL(blob);
-}
+  var reader = new FileReader();
+  reader.readAsArrayBufer(blob);
+  actx.decodeAudioData(this.result).then(function(buffer) {
+    console.log(buffer);
+    buf_list[8] = "User Sound";
+    dropdown.defineOptions(Object.values(buf_list));
+    userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
+    dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
+    })
+  }
 }
 //LOADS SOUND
 load.onchange = function() {
@@ -258,15 +267,15 @@ recordMic.on('change',async function(v) {
     const meter = new Tone.Meter();
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
+    record();
+
     	// promise resolves when input is available
-    console.log("mic open");
     	// print the incoming mic levels in decibels
     setInterval(() => console.log(meter.getValue()), 100);
     }).catch(e => {
     	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
     });
-    record();
   } else {
     recorder.stop();
   }
