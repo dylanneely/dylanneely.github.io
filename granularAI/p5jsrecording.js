@@ -121,7 +121,21 @@ function record() {
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
   audio.src = URL.createObjectURL(blob);
+  recordToBuf(blob);
   }
+}
+
+function recordToBuf (blob) {
+  var reader = new FileReader();
+  reader.onloadend = function(buffer) {
+    console.log(buffer);
+    buf_list[8] = "User Sound"; //should grab file name
+    dropdown.defineOptions(Object.values(buf_list));
+    userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
+    dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
+  //buffers.get("[object HTMLAudioElement]").key = "8";  //by dictionary was tricky
+  });
+  reader.readAsArrayBuffer(blob);
 }
 
 //LOADS SOUND
@@ -253,29 +267,12 @@ let recordMic = new Nexus.TextButton('#recordmic', {
     'alternateText': 'Stop Recording'
 })
 
-// function recordmic() {
-//   const chunks = [];
-//   var reader = new FileReader();
-//   recorder.start();
-//   recorder.ondataavailable = evt => chunks.push(evt.data);
-//   recorder.onstop = evt => {
-//   let blob = new Blob(chunks);
-//   actx.decodeAudioData(this.result).then(function(buffer) {
-//     console.log(buffer);
-//     buf_list[8] = "User Sound";
-//     dropdown.defineOptions(Object.values(buf_list));
-//     userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
-//     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
-//     })
-//   }
-//   reader.readAsArrayBuffer(blob);
-// }
+const meter = new Tone.Meter();
+const mic = new Tone.UserMedia().connect(meter);
+mic.connect(recDest);
 
 recordMic.on('change', async function(v) {
   await Tone.start();
-  const meter = new Tone.Meter();
-  const mic = new Tone.UserMedia().connect(meter);
-  mic.connect(recDest);
   if (v == true) {
     mic.open().then(() => {
     	// promise resolves when input is available
@@ -289,7 +286,7 @@ recordMic.on('change', async function(v) {
     });
   } else {
     recorder.stop();
-    mic.stop();
+    mic.close();
   }
 })
 
