@@ -133,8 +133,7 @@ function recordToBuf (blob) {
     dropdown.defineOptions(Object.values(buf_list));
     userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
-  //buffers.get("[object HTMLAudioElement]").key = "8";  //by dictionary was tricky
-  });
+  };
   reader.readAsArrayBuffer(blob);
 }
 
