@@ -281,8 +281,6 @@ recordMic.on('change', async function(v) {
     	// promise resolves when input is available
     console.log("mic open");
     record();
-    const recSource  = actx.createMediaStreamSource();
-    console.log(recSource);
     	// print the incoming mic levels in decibels
     setInterval(() => console.log(meter.getValue()), 100);
     }).catch(e => {
