@@ -121,7 +121,7 @@ function record() {
   recorder.ondataavailable = evt => chunks.push(evt.data);
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
-  audio.src = URL.createObjectURL(blob);
+  //audio.src = URL.createObjectURL(blob);
   var reader = new FileReader();
   reader.readAsArrayBufer(blob);
   actx.decodeAudioData(this.result).then(function(buffer) {
@@ -281,6 +281,7 @@ recordMic.on('change',async function(v) {
   }
 })
 
+//GET blob:https://www.gebrauchsmusik.com/ed782395-f93e-45c1-a76d-21dba9c8967d net::ERR_REQUEST_RANGE_NOT_SATISFIABLE
 
 let radiobutton = new Nexus.RadioButton('#radiobutton',{
   'size': [200,50],
