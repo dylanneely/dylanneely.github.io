@@ -124,7 +124,6 @@ function record() {
   audio.src = URL.createObjectURL(blob);
   }
 }
-
 function recordmic() {
   const chunks = [];
   var reader = new FileReader();
@@ -140,7 +139,7 @@ function recordmic() {
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
     })
   }
-  reader.readAsArrayBufer(blob);
+  reader.readAsArrayBuffer(blob);
 }
 
 //LOADS SOUND
@@ -279,7 +278,7 @@ recordMic.on('change',async function(v) {
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
     //console.log("mic started");
-    //recordmic();
+    recordmic();
 
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
