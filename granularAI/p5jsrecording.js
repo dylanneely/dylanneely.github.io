@@ -291,6 +291,7 @@ recordMic.on('change',async function(v) {
     });
   } else {
     recorder.stop();
+    mic.close();
   }
 })
 
