@@ -273,16 +273,16 @@ let recordMic = new Nexus.TextButton('#recordmic', {
 // }
 
 recordMic.on('change',async function(v) {
+  const meter = new Tone.Meter();
+  const mic = new Tone.UserMedia().connect(meter);
   if (v == true) {
     await Tone.start();
-    console.log("mic open");
-
-    const meter = new Tone.Meter();
-    const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
-    console.log("mic started");
-    record();
     	// promise resolves when input is available
+    console.log("mic open");
+    record();
+    const recSource  = actx.createMediaStreamSource();
+    console.log(recSource);
     	// print the incoming mic levels in decibels
     setInterval(() => console.log(meter.getValue()), 100);
     }).catch(e => {
@@ -291,7 +291,7 @@ recordMic.on('change',async function(v) {
     });
   } else {
     recorder.stop();
-    mic.close();
+    mic.stop();
   }
 })
 
