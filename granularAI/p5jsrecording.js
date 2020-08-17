@@ -278,7 +278,7 @@ recordMic.on('change',async function(v) {
     const meter = new Tone.Meter();
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
-    console.log("mic started");
+    //console.log("mic started");
     recordmic();
 
     	// promise resolves when input is available
