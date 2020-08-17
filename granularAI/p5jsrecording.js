@@ -217,9 +217,11 @@ let recordButton = new Nexus.TextButton('#record', {
 recordButton.on('change',async function(v) {
   if (v == true) {
     await Tone.start();
+    "Record Started"
     record();
   } else {
     recorder.stop();
+    "Record Stopped"
   }
 })
 
@@ -280,8 +282,6 @@ recordMic.on('change',async function(v) {
     mic.open().then(() => {
     console.log("mic started");
     record();
-
-
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
     setInterval(() => console.log(meter.getValue()), 100);
