@@ -283,7 +283,7 @@ recordMic.on('change',async function(v) {
 
     	// promise resolves when input is available
     	// print the incoming mic levels in decibels
-    setInterval(() => console.log(meter.getValue()), 100);
+    //setInterval(() => console.log(meter.getValue()), 100);
     }).catch(e => {
     	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
