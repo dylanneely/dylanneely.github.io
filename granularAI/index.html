@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Granular AI</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- import the webpage's javascript file -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.39/build/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nexusui@2.0.13/dist/NexusUI.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.8/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/core.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/music_rnn.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.19.0/es6/music_vae.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.sound.min.js"></script>-->
+    <script src="gransampler.js" defer></script>
+    <script src="p5jsrecording.js" defer></script>
+
+  </head>
+  <body>
+
+    <div class="row">
+      <div class="columnleft" style="background-color:#FFB695;">
+          <div id="grains">
+            Start & Loop Size
+            <div nexus-ui ="position" id ="graincontrol1" style = "padding: 10px 10px 10px 10px"></div>
+            Playback Rate & Detune
+            <div nexus-ui ="position" id ="graincontrol2" style= "padding: 10px 10px 10px 10px"></div>
+          </div>
+          <div nexus-ui="radiobutton" id ="grainSelect" style="padding-bottom: 15px">
+          </div>
+      </div>
+      <div class="columncenterL" style="background-color:#96D1CD; padding-right: 10px">
+        <div id="grains2">
+          Grain Size & Overlap
+          <div nexus-ui ="position" id ="graincontrol3" style = "padding: 10px 10px 10px 10px"></div>
+          Filter Control (to do)
+          <div nexus-ui ="position" id ="graincontrol4" style="padding: 10px 10px 10px 10px"></div>
+        </div>
+        <div nexus-ui="textbutton" id="loopGrain" style="padding: 15px 0px 15px 0px">
+        </div>
+      </div>
+      <div class="columncenter" style="background-color:#96D1CD;">
+      </div>
+      <div class="columncenterR" style="background-color:#96D1CD;">
+      </div>
+      <div class="columnright" style="background-color:#FFFF00;">
+        <div nexus-ui="button" id="start" style="padding-bottom: 50px">
+          Start / Stop
+        </div>
+        <div nexus-ui="radiobutton" id ="radiobutton" style="padding-bottom: 15px">
+        Generate Parts
+        </div>
+        <div nexus-ui="dropdown" id ="dropdown" accept="audio/*" style="padding-bottom: 15px">
+        </div>
+        <input type="file" id="load"></input >
+        <audio id="sound"></audio>
+        <div nexus-ui="textbutton" id="record" style="padding: 15px 0px 15px 0px">
+        </div>
+        <div nexus-ui="textbutton" id="recordmic" style = "padding-bottom: 10px">
+        </div>
+        <audio controls> style=""</audio>
+      </div>
+      <div class="columnfarright" style="background-color:#FFB695;">
+        <div nexus-ui="slider" id="volumes">
+          Grain Volumes
+          <div nexus-ui ="slider" id ="gVolume1"></div>
+          <div nexus-ui ="slider" id ="gVolume2"></div>
+          <div nexus-ui ="slider" id ="gVolume3"></div>
+          <div nexus-ui ="slider" id ="gVolume4"></div>
+          <div nexus-ui ="slider" id ="gVolume5"></div>
+          <div nexus-ui ="slider" id ="gVolume6"></div>
+          <div nexus-ui ="slider" id ="gVolume7"></div>
+          <div nexus-ui ="slider" id ="gVolume8"></div>
+          Synth Volumes
+          <div nexus-ui ="slider" id ="sVolume1"></div>
+          <div nexus-ui ="slider" id ="sVolume2"></div>
+          <div nexus-ui ="slider" id ="sVolume3"></div>
+          <div nexus-ui ="slider" id ="sVolume4"></div>
+          <div nexus-ui ="slider" id ="sVolume5"></div>
+          <div nexus-ui ="slider" id ="sVolume6"></div>
+          <div nexus-ui ="slider" id ="sVolume7"></div>
+          <div nexus-ui ="slider" id ="sVolume8"></div>
+          Drone Synth
+          <div nexus-ui="slider" id ="droneVol"></div>
+          Grain Bus
+          <div nexus-ui="slider" id ="grainVol"></div>
+          Synth Bus
+          <div nexus-ui="slider" id ="synthVol"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
