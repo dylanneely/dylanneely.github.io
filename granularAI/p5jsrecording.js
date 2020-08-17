@@ -273,10 +273,12 @@ let recordMic = new Nexus.TextButton('#recordmic', {
 recordMic.on('change',async function(v) {
   if (v == true) {
     await Tone.start();
+    console.log("mic open");
 
     const meter = new Tone.Meter();
     const mic = new Tone.UserMedia().connect(meter);
     mic.open().then(() => {
+    console.log("mic started");
     recordmic();
 
     	// promise resolves when input is available
