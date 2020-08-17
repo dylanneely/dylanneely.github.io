@@ -79,7 +79,6 @@ const synthFilter = new Tone.Filter(2000, "lowpass");
 // const grainBusGain = new Tone.Gain(0).toDestination();
 // const synthBusGain = new Tone.Gain(0).toDestination(); not working
 verb.connect(recDest)
-verb.connect(recDest)
 const autoFilter = new Tone.AutoFilter(0.1).start();
 
 for (let i = 0; i < grain_list.length; i++) { //handle grain and synth routing together
@@ -276,6 +275,7 @@ recordMic.on('change', async function(v) {
   await Tone.start();
   const meter = new Tone.Meter();
   const mic = new Tone.UserMedia().connect(meter);
+  mic.connect(recDest);
   if (v == true) {
     mic.open().then(() => {
     	// promise resolves when input is available
