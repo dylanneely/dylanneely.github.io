@@ -121,7 +121,8 @@ function record() {
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
   audio.src = URL.createObjectURL(blob);
-  recordToBuf(blob);
+  blobURL = URL.createObjectURL(blob);
+  recordToBuf(blobURL);
   console.log(blob)
   }
 }
@@ -134,10 +135,12 @@ function recordToBuf (blob) {
     console.log(buffer);
     buf_list[8] = "User Sound"; //should grab file name
     dropdown.defineOptions(Object.values(buf_list));
-    userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
+    userAudio = new Tone.ToneAudioBuffer(blobURL); //Created new buffer, because
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
   });
-  reader.readAsArrayBuffer(blob);
+  reader.readAsDataURL(blob);
+  console.log(this.files[0]);
+  console.log("everything " + this.files);
   }
 }
 
@@ -156,8 +159,6 @@ load.onchange = function() {
   });
   };
   reader.readAsArrayBuffer(this.files[0]);
-  console.log(this.files[0]);
-  console.log("everything " + this.files);
 };
 
 //AI
