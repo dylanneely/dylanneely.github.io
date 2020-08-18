@@ -121,16 +121,16 @@ function record() {
   recorder.onstop = evt => {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
   audio.src = URL.createObjectURL(blob);
-  blobURL = URL.createObjectURL(blob);
+  let blobURL = URL.createObjectURL(blob);
   recordToBuf(blobURL);
-  console.log(blob)
+  console.log("blob:" +  blob + " blobURL " + blobURL)
   }
 }
 
-function recordToBuf (blob) {
+function recordToBuf (blobURL) {
   var reader = new FileReader();
   reader.onloadend = function(e) {
-    conesole.log(this.result);
+    console.log(this.result);
     actx.decodeAudioData(this.result).then(function(buffer) {
     console.log(buffer);
     buf_list[8] = "User Sound"; //should grab file name
@@ -138,7 +138,7 @@ function recordToBuf (blob) {
     userAudio = new Tone.ToneAudioBuffer(blobURL); //Created new buffer, because
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
   });
-  reader.readAsDataURL(blob);
+  reader.readAsDataURL(blobURL);
   console.log(this.files[0]);
   console.log("everything " + this.files);
   }
