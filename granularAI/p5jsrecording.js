@@ -122,12 +122,14 @@ function record() {
   let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
   audio.src = URL.createObjectURL(blob);
   recordToBuf(blob);
+  console.log(blob)
   }
 }
 
 function recordToBuf (blob) {
   var reader = new FileReader();
   reader.onloadend = function(e) {
+    conesole.log(this.result);
     actx.decodeAudioData(this.result).then(function(buffer) {
     console.log(buffer);
     buf_list[8] = "User Sound"; //should grab file name
