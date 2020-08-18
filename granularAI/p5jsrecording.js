@@ -127,14 +127,16 @@ function record() {
 
 function recordToBuf (blob) {
   var reader = new FileReader();
-  reader.onloadend = function(buffer) {
+  reader.onloadend = function(e) {
+    actx.decodeAudioData(this.result).then(function(buffer) {
     console.log(buffer);
     buf_list[8] = "User Sound"; //should grab file name
     dropdown.defineOptions(Object.values(buf_list));
     userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
-  };
+  });
   reader.readAsArrayBuffer(blob);
+  }
 }
 
 //LOADS SOUND
@@ -152,6 +154,8 @@ load.onchange = function() {
   });
   };
   reader.readAsArrayBuffer(this.files[0]);
+  console.log(this.files[0]);
+  console.log("everything " + this.files);
 };
 
 //AI
@@ -278,7 +282,7 @@ recordMic.on('change', async function(v) {
     console.log("mic open");
     record();
     	// print the incoming mic levels in decibels
-    setInterval(() => console.log(meter.getValue()), 100);
+    //setInterval(() => console.log(meter.getValue()), 100);
     }).catch(e => {
     	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
