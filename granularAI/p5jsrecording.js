@@ -128,14 +128,14 @@ function record() {
 }
 
 function recordToBuf (blobURL) {
-  var reader = new FileReader();
-  reader.onloadend = function(e) {
-    console.log(this.result);
-    actx.decodeAudioData(this.result).then(function(buffer) {
-    console.log(buffer);
+  // var reader = new FileReader();
+  // reader.onloadend = function(e) {
+  //   console.log(this.result);
+  //   actx.decodeAudioData(this.result).then(function(buffer) {
+    console.log(blobURL);
     buf_list[8] = "User Sound"; //should grab file name
     dropdown.defineOptions(Object.values(buf_list));
-    userAudio = new Tone.ToneAudioBuffer(buffer); //Created new buffer, because
+    userAudio = new Tone.ToneAudioBuffer(blobURL); //Created new buffer, because
     dropdown.selectedIndex = 8;               //accessing the added buffer to buffers
   });
   reader.readAsDataURL(blobURL);
