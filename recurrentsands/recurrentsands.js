@@ -39,17 +39,13 @@ let sFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filte
 let delayList = ["delay1", "delay2", "delay3", "delay4", "delay5", "delay6", "delay7", "delay8"]
 let gFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filter6", "filter7", "filter8"]
 
-let delayWet = 0.1;
-let delayFeedback = 0.5;
-let filterCutoff = 3000;
-
-//CREATE OUR BUFFERS
+//CREATE BUFFERS
 buffers = new Tone.ToneAudioBuffers({
            urls: bufList,
            baseUrl: baseURL
         });
 
-//CREATE OUR PLAYERS & PROCESSING NODES
+//CREATE PLAYERS & PROCESSING NODES
 for (grainNum in grainList) {
         grainList[grainNum] = new Tone.GrainPlayer(buffers.get(grainNum));
     }
@@ -84,7 +80,10 @@ for (filt in gFilterList) {
   gFilterList[filt] = new Tone.Filter(filterCutoff, "lowpass");
 }
 
-let delayLengths = ["1n", "2n", "4n", "8n"]
+let delayLengths = ["1n", "2n", "4n", "8n"];
+let delayWet = 0.1;
+let delayFeedback = 0.5;
+let filterCutoff = 3000;
 
 for (delay in delayList) {
   let delayChoice = randomMIDIpitch(0, 3);
@@ -570,7 +569,7 @@ recordMic.on('change', async function(v) {
     console.log(stream._stream);
     let pitchDetector = ml5.pitchDetection(
      "./model/",
-     actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
+     p.getAudioContext(), //workaround for createscriptprocessor in ml5.js - deprecated method
      stream._stream,
      modelLoaded
    );
