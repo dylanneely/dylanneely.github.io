@@ -38,7 +38,11 @@ let phaserList = ["chorus1", "chorus2", "chorus3", "chorus4", "chorus5", "chorus
 let sFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filter6", "filter7", "filter8"]
 let delayList = ["delay1", "delay2", "delay3", "delay4", "delay5", "delay6", "delay7", "delay8"]
 let gFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filter6", "filter7", "filter8"]
-
+//DELAY & FILTER VARS
+let delayLengths = ["1n", "2n", "4n", "8n"];
+let delayWet = 0.1;
+let delayFeedback = 0.5;
+let filterCutoff = 3000;
 //CREATE BUFFERS
 buffers = new Tone.ToneAudioBuffers({
            urls: bufList,
@@ -80,10 +84,6 @@ for (filt in gFilterList) {
   gFilterList[filt] = new Tone.Filter(filterCutoff, "lowpass");
 }
 
-let delayLengths = ["1n", "2n", "4n", "8n"];
-let delayWet = 0.1;
-let delayFeedback = 0.5;
-let filterCutoff = 3000;
 
 for (delay in delayList) {
   let delayChoice = randomMIDIpitch(0, 3);
