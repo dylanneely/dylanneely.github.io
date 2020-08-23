@@ -17,8 +17,8 @@ const actx  = Tone.context;
 const recDest  = actx.createMediaStreamDestination();
 const recorder = new MediaRecorder(recDest.stream);
 
-const meter = new Tone.Meter();
-const mic = new Tone.UserMedia().connect(meter);
+//const meter = new Tone.Meter();
+const mic = new Tone.UserMedia();//.connect(meter);
 mic.connect(recDest);
 
 Nexus.context = actx._context;
@@ -267,7 +267,15 @@ async function newGrainBuf(userAudioIndex) { //set buffer
     newBuf = true; //draw new buffer
   }
 
-//function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
+// function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
+// TRIED USING CREPE PORT TO ML5JS. HOWEVER, THE MODEL IS TRAINED AT 16KHZ SAMPLES, AND THE CLASS IS
+// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. WOULD NEED TO WRITE NEW CLASS - WILL USE FFT FOR NOW
+const pitchDetector = ml5.pitchDetection(
+  "./model/",
+  actx,
+  mic.stream,
+  modelLoaded
+);
 
 //AI GENERATION
 let melodyRnn = new music_rnn.MusicRNN( 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/melody_rnn');
@@ -528,8 +536,8 @@ else {
 })
 //RECORD COMPUTER OUTPUT INTO BUFFER
 recordButton.on('change',async function(v) {
+  await Tone.start();
   if (v == true) {
-    await Tone.start();
     "Record Started"
     record();
   } else {
@@ -567,6 +575,22 @@ recordMic.on('change', async function(v) {
     mic.close();
   }
 })
+
+const pitchDetect = ml5.pitchDetection(
+  "./model/",
+  audioContext,
+  mic,
+  modelLoaded
+);
+
+// When the model is loaded
+function modelLoaded() {
+  console.log("Model Loaded!");
+}
+
+// pitch.getPitch(function(err, frequency) {
+//   console.log(frequency);
+// });
 //CREATE AI PARTS WITH SYNTHESIS RADIOBUTTON
 generateParts.on('change', async function(v) {
   if (v > -1) {
