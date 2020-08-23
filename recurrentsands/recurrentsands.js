@@ -571,7 +571,7 @@ recordMic.on('change', async function(v) {
     console.log(stream._MediaStream);
     const pitchDetector = ml5.pitchDetection(
       "./model/",
-      actx,
+      actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
       stream._stream,
       modelLoaded
     );
