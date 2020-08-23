@@ -578,7 +578,7 @@ recordMic.on('change', async function(v) {
 
 const pitchDetect = ml5.pitchDetection(
   "./model/",
-  audioContext,
+  actx,
   mic,
   modelLoaded
 );
