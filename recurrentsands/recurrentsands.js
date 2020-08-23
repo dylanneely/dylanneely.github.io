@@ -567,7 +567,7 @@ grainLoop.on('change',async function(v) {
   }
 })
 //RECORD INPUT
-mic.connect(pitchDetector);
+// mic.connect(pitchDetector);
 recordMic.on('change', async function(v) {
   await Tone.start();
   if (v == true) {
