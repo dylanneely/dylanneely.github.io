@@ -559,23 +559,6 @@ grainLoop.on('change',async function(v) {
     grainLooping = false;
   }
 })
-//RECORD INPUT
-recordMic.on('change', async function(v) {
-  await Tone.start();
-  if (v == true) {
-    mic.open().then(() => { // promise resolves when input is available
-    console.log("start recording mic");
-    record();
-    }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
-    alert("mic not available - please try accessing from https connection");
-    });
-  } else {
-    recorder.stop();
-    console.log("stop recording mic");
-    mic.close();
-  }
-})
-
 const pitchDetect = ml5.pitchDetection(
   "./model/",
   actx,
@@ -587,6 +570,28 @@ const pitchDetect = ml5.pitchDetection(
 function modelLoaded() {
   console.log("Model Loaded!");
 }
+
+//RECORD INPUT
+recordMic.on('change', async function(v) {
+  await Tone.start();
+  if (v == true) {
+    mic.open().then(() => { // promise resolves when input is available
+    console.log("start recording mic");
+    record();
+    setInterval(() => {pitch.getPitch(function(err, frequency) {
+      console.log(frequency);
+    })}, 100);
+    }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
+    alert("mic not available - please try accessing from https connection");
+    });
+  } else {
+    recorder.stop();
+    console.log("stop recording mic");
+    mic.close();
+  }
+})
+
+
 
 // pitch.getPitch(function(err, frequency) {
 //   console.log(frequency);
