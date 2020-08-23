@@ -567,9 +567,11 @@ recordMic.on('change', async function(v) {
     mic.open().then(function(stream) { // promise resolves when input is available
     console.log("start recording mic");
     console.log(stream._stream);
+    console.log(mic.connect())
+    console.log(actx);
     let pitchDetector = ml5.pitchDetection(
      "./model/",
-     p.getAudioContext(), //workaround for createscriptprocessor in ml5.js - deprecated method
+     actx, //workaround for createscriptprocessor in ml5.js - deprecated method
      stream._stream,
      modelLoaded
    );
