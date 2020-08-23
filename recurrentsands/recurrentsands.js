@@ -38,18 +38,18 @@ let phaserList = ["chorus1", "chorus2", "chorus3", "chorus4", "chorus5", "chorus
 let sFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filter6", "filter7", "filter8"]
 let delayList = ["delay1", "delay2", "delay3", "delay4", "delay5", "delay6", "delay7", "delay8"]
 let gFilterList = ["filter1", "filter2", "filter3", "filter4", "filter5", "filter6", "filter7", "filter8"]
-//DELAY & FILTER VARS
-let delayLengths = ["1n", "2n", "4n", "8n"];
+
 let delayWet = 0.1;
 let delayFeedback = 0.5;
 let filterCutoff = 3000;
-//CREATE BUFFERS
+
+//CREATE OUR BUFFERS
 buffers = new Tone.ToneAudioBuffers({
            urls: bufList,
            baseUrl: baseURL
         });
 
-//CREATE PLAYERS & PROCESSING NODES
+//CREATE OUR PLAYERS & PROCESSING NODES
 for (grainNum in grainList) {
         grainList[grainNum] = new Tone.GrainPlayer(buffers.get(grainNum));
     }
@@ -84,6 +84,7 @@ for (filt in gFilterList) {
   gFilterList[filt] = new Tone.Filter(filterCutoff, "lowpass");
 }
 
+let delayLengths = ["1n", "2n", "4n", "8n"]
 
 for (delay in delayList) {
   let delayChoice = randomMIDIpitch(0, 3);
@@ -178,6 +179,7 @@ const s = ( sketch ) => {
   sketch.draw = () => {
       if (newBuf == false) {}
       else {
+        bufData = grainList[grainSelect].buffer.getChannelData(); //moved this here from drawbuffer, so it wouldn't need to be called as often
         drawLoop();
         newBuf = false;
       }
@@ -185,6 +187,7 @@ const s = ( sketch ) => {
 };
 let p = new p5(s, document.getElementById('sketch-holder'));
 
+let bufData;
 function drawBuffer() {
   p.clear();
   p.background(220);
@@ -195,12 +198,11 @@ function drawBuffer() {
   p.strokeWeight(2);
   p.fill('rgba(220,220,220, 0)');
   p.rect(0, 0, cnvWidth, cnvHeight);
-  const buffer = grainList[grainSelect].buffer.getChannelData();
   const bandSize = cnvWidth / buffer.length;
   p.stroke("#11249c");
   p.beginShape();
-  for (let i = 0; i < buffer.length; i += 4) { // a bit less detail
-    p.curveVertex(bandSize * i, p.map(buffer[i], -1, 1, cnvHeight, 0));
+  for (let i = 0; i < bufData.length; i += 4) { // a bit less detail
+    p.curveVertex(bandSize * i, p.map(bufData[i], -1, 1, cnvHeight, 0));
   }
   p.endShape();
 }
@@ -268,9 +270,13 @@ async function newGrainBuf(userAudioIndex) { //set buffer
 
 // function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
 // TRIED USING CREPE PORT TO ML5JS. HOWEVER, THE MODEL IS TRAINED AT 16KHZ SAMPLES, AND THE CLASS IS
-// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. ADDITIONALLY, CURRENTLY USES DEPRECATED CREATESCRIPTPROCESSOR.
-//WOULD LIKE TO DEVELOP / CONTRIBUTE TO ML5JS TO MODERNIZE THIS CLASS AND INCLUDE FUNCTIONALITY FOR BUFFERS
-
+// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. WOULD NEED TO WRITE NEW CLASS - WILL USE FFT FOR NOW
+const pitchDetector = ml5.pitchDetection(
+  "./model/",
+  actx,
+  mic.stream,
+  modelLoaded
+);
 
 //AI GENERATION
 let melodyRnn = new music_rnn.MusicRNN( 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/melody_rnn');
@@ -554,32 +560,13 @@ grainLoop.on('change',async function(v) {
     grainLooping = false;
   }
 })
-
-
-// When the model is loaded
-function modelLoaded() {
-  console.log("Model Loaded!");
-}
-
 //RECORD INPUT
 recordMic.on('change', async function(v) {
   await Tone.start();
   if (v == true) {
-    mic.open().then(function(stream) { // promise resolves when input is available
+    mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
-    console.log(stream._stream);
-    console.log(actx._context);
-    let pitchDetector = ml5.pitchDetection(
-     "./model/",
-     actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
-     stream._stream,
-     modelLoaded
-   );
-
-    //record();
-    pitchDetector.getPitch(function(err, frequency) {
-      console.log(frequency);
-    }, 100);
+    record();
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
     });
@@ -590,11 +577,11 @@ recordMic.on('change', async function(v) {
   }
 })
 
+// function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
+// TRIED USING CREPE PORT TO ML5JS. HOWEVER, THE MODEL IS TRAINED AT 16KHZ SAMPLES, AND THE CLASS IS
+// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. ADDITIONALLY, CURRENTLY USES DEPRECATED CREATESCRIPTPROCESSOR.
+//WOULD LIKE TO DEVELOP / CONTRIBUTE TO ML5JS TO MODERNIZE THIS CLASS AND INCLUDE FUNCTIONALITY FOR BUFFERS
 
-
-// pitch.getPitch(function(err, frequency) {
-//   console.log(frequency);
-// });
 //CREATE AI PARTS WITH SYNTHESIS RADIOBUTTON
 generateParts.on('change', async function(v) {
   if (v > -1) {
