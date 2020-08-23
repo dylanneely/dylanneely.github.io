@@ -267,6 +267,19 @@ async function newGrainBuf(userAudioIndex) { //set buffer
     newBuf = true; //draw new buffer
   }
 
+//function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
+
+const pitchDetector = ml5.pitchDetection(
+  "./model/",
+  actx,
+  mic,
+  modelLoaded
+);
+
+function modelLoaded() {
+  console.log("Model Loaded!");
+}
+
 //AI GENERATION
 let melodyRnn = new music_rnn.MusicRNN( 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/melody_rnn');
 let melodyRnnLoaded = melodyRnn.initialize();
@@ -280,7 +293,7 @@ async function generateMelody() {
     totalQuantizedSteps: rhythmSeed.reduce(function(a, b){return a + b;}),
     quantizationInfo: { stepsPerQuarter: 4}, //speeds up, adds a bit of funkiness
   };
-  let steps = randomMIDIpitch(24, 60);
+  let steps = randomMIDIpitch(28, 60);
   let temperature = 0.9;
   let result = await melodyRnn.continueSequence(seed, steps, temperature);
   let combined = core.sequences.concatenate([seed, result]);
@@ -530,6 +543,9 @@ recordButton.on('change',async function(v) {
     await Tone.start();
     "Record Started"
     record();
+    pitchDetector.getPitch(function(err, frequency) {
+      console.log(frequency);
+    });
   } else {
     recorder.stop();
     "Record Stopped"
@@ -556,6 +572,9 @@ recordMic.on('change', async function(v) {
     mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
     record();
+    pitchDetector.getPitch(function(err, frequency) {
+      console.log(frequency);
+    });
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
     });
