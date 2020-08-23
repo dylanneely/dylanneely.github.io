@@ -560,9 +560,9 @@ grainLoop.on('change',async function(v) {
 function modelLoaded() {
   console.log("Model Loaded!");
 }
-
+let pitchDetector;
 function startPitch() {
-  const pitchDetector = ml5.pitchDetection(
+   pitchDetector = ml5.pitchDetection(
     "./model/",
     actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
     stream._stream,
