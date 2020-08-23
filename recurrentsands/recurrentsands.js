@@ -572,6 +572,7 @@ recordMic.on('change', async function(v) {
     mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
     record();
+    mic.connect(pitchDetector);
     pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
     });
