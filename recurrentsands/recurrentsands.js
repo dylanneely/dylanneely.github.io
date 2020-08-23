@@ -561,10 +561,11 @@ function modelLoaded() {
   console.log("Model Loaded!");
 }
 let pitchDetector;
+
 function startPitch() {
    pitchDetector = ml5.pitchDetection(
     "./model/",
-    actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
+    actx.context, //workaround for createscriptprocessor in ml5.js - deprecated method
     stream._stream,
     modelLoaded
   );
