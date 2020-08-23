@@ -543,6 +543,7 @@ recordButton.on('change',async function(v) {
     await Tone.start();
     "Record Started"
     record();
+    mic.connect(pitchDetector);
     pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
     });
