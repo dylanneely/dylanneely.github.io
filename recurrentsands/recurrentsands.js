@@ -543,10 +543,10 @@ recordButton.on('change',async function(v) {
     await Tone.start();
     "Record Started"
     record();
-    mic.connect(pitchDetector);
-    pitchDetector.getPitch(function(err, frequency) {
-      console.log(frequency);
-    });
+    //recDest.connect(pitchDetector);
+    // pitchDetector.getPitch(function(err, frequency) {
+    //   console.log(frequency);
+    // });
   } else {
     recorder.stop();
     "Record Stopped"
@@ -567,13 +567,13 @@ grainLoop.on('change',async function(v) {
   }
 })
 //RECORD INPUT
+mic.connect(pitchDetector);
 recordMic.on('change', async function(v) {
   await Tone.start();
   if (v == true) {
     mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
     record();
-    mic.connect(pitchDetector);
     pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
     });
