@@ -187,7 +187,7 @@ const s = ( sketch ) => {
 };
 let p = new p5(s, document.getElementById('sketch-holder'));
 
-let bufData;
+let bufData = grainList[grainSelect].buffer.getChannelData();;
 function drawBuffer() {
   p.clear();
   p.background(220);
