@@ -277,6 +277,10 @@ const pitchDetector = ml5.pitchDetection(
   modelLoaded
 );
 
+console.log("mic stream " + mic.stream)
+console.log("mic " + mic);
+console.log("mic get " + mic.get())
+
 //AI GENERATION
 let melodyRnn = new music_rnn.MusicRNN( 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/melody_rnn');
 let melodyRnnLoaded = melodyRnn.initialize();
