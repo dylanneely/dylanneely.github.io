@@ -268,7 +268,8 @@ async function newGrainBuf(userAudioIndex) { //set buffer
 
 // function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
 // TRIED USING CREPE PORT TO ML5JS. HOWEVER, THE MODEL IS TRAINED AT 16KHZ SAMPLES, AND THE CLASS IS
-// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. WOULD NEED TO WRITE NEW CLASS - WILL USE FFT FOR NOW
+// CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. ADDITIONALLY, CURRENTLY USES DEPRECATED CREATESCRIPTPROCESSOR.
+//WOULD LIKE TO DEVELOP / CONTRIBUTE TO ML5JS TO MODERNIZE THIS CLASS AND INCLUDE FUNCTIONALITY FOR BUFFERS
 
 
 //AI GENERATION
@@ -567,10 +568,10 @@ recordMic.on('change', async function(v) {
     mic.open().then(function(stream) { // promise resolves when input is available
     console.log("start recording mic");
     console.log(stream._stream);
-    console.log(actx);
+    console.log(actx._context);
     let pitchDetector = ml5.pitchDetection(
      "./model/",
-     actx, //workaround for createscriptprocessor in ml5.js - deprecated method
+     actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
      stream._stream,
      modelLoaded
    );
