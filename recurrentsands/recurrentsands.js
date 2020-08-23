@@ -574,7 +574,7 @@ recordMic.on('change', async function(v) {
       modelLoaded
     );
     record();
-    setInterval(() => {pitchDetect.getPitch(function(err, frequency) {
+    setInterval(() => {pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
     })}, 100);
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
