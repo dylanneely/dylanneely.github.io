@@ -580,9 +580,9 @@ recordMic.on('change', async function(v) {
     startPitch();
 
     //record();
-    setInterval(() => {pitchDetector.getPitch(function(err, frequency) {
+    pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
-    })}, 100);
+    }, 100);
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
     });
