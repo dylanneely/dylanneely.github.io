@@ -565,7 +565,7 @@ function modelLoaded() {
 recordMic.on('change', async function(v) {
   await Tone.start();
   if (v == true) {
-    mic.open().then((stream) => { // promise resolves when input is available
+    mic.open().then(function(stream) => { // promise resolves when input is available
     console.log("start recording mic");
     const pitchDetector = ml5.pitchDetection(
       "./model/",
@@ -573,7 +573,7 @@ recordMic.on('change', async function(v) {
       stream,
       modelLoaded
     );
-    record();
+    //record();
     setInterval(() => {pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
     })}, 100);
