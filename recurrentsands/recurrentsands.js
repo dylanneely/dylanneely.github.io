@@ -270,16 +270,7 @@ async function newGrainBuf(userAudioIndex) { //set buffer
 // function pitchDetector () //TO DO: TRIGGERED AT BEGINNING OF GENERATE MELODY. WILL SET SEED PITCH
 // TRIED USING CREPE PORT TO ML5JS. HOWEVER, THE MODEL IS TRAINED AT 16KHZ SAMPLES, AND THE CLASS IS
 // CONSTRICTED TO ONLY WORK WITH MIC INPUT STREAM. WOULD NEED TO WRITE NEW CLASS - WILL USE FFT FOR NOW
-const pitchDetector = ml5.pitchDetection(
-  "./model/",
-  actx,
-  mic._stream,
-  modelLoaded
-);
 
-console.log("mic stream " + mic._stream)
-console.log("mic " + mic);
-console.log("mic get " + mic.get())
 
 //AI GENERATION
 let melodyRnn = new music_rnn.MusicRNN( 'https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/melody_rnn');
@@ -563,12 +554,7 @@ grainLoop.on('change',async function(v) {
     grainLooping = false;
   }
 })
-const pitchDetect = ml5.pitchDetection(
-  "./model/",
-  actx,
-  mic,
-  modelLoaded
-);
+
 
 // When the model is loaded
 function modelLoaded() {
@@ -579,8 +565,14 @@ function modelLoaded() {
 recordMic.on('change', async function(v) {
   await Tone.start();
   if (v == true) {
-    mic.open().then(() => { // promise resolves when input is available
+    mic.open().then((stream) => { // promise resolves when input is available
     console.log("start recording mic");
+    const pitchDetector = ml5.pitchDetection(
+      "./model/",
+      actx,
+      stream,
+      modelLoaded
+    );
     record();
     setInterval(() => {pitchDetect.getPitch(function(err, frequency) {
       console.log(frequency);
