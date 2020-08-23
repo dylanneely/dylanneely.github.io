@@ -272,7 +272,7 @@ async function newGrainBuf(userAudioIndex) { //set buffer
 const pitchDetector = ml5.pitchDetection(
   "./model/",
   actx,
-  mic.stream,
+  mic,
   modelLoaded
 );
 
@@ -574,9 +574,9 @@ recordMic.on('change', async function(v) {
     mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
     record();
-    pitchDetector.getPitch(function(err, frequency) {
+    setInterval(() => pitchDetector.getPitch(function(err, frequency) {
       console.log(frequency);
-    });
+    }));
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
     alert("mic not available - please try accessing from https connection");
     });
