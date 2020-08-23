@@ -560,16 +560,6 @@ grainLoop.on('change',async function(v) {
 function modelLoaded() {
   console.log("Model Loaded!");
 }
-let pitchDetector;
-
-function startPitch() {
-   pitchDetector = ml5.pitchDetection(
-    "./model/",
-    actx.context, //workaround for createscriptprocessor in ml5.js - deprecated method
-    stream._stream,
-    modelLoaded
-  );
-}
 
 //RECORD INPUT
 recordMic.on('change', async function(v) {
@@ -578,7 +568,12 @@ recordMic.on('change', async function(v) {
     mic.open().then(function(stream) { // promise resolves when input is available
     console.log("start recording mic");
     console.log(stream._stream);
-    startPitch();
+    let pitchDetector = ml5.pitchDetection(
+     "./model/",
+     actx._context, //workaround for createscriptprocessor in ml5.js - deprecated method
+     stream._stream,
+     modelLoaded
+   );
 
     //record();
     pitchDetector.getPitch(function(err, frequency) {
