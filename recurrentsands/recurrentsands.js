@@ -578,7 +578,7 @@ recordMic.on('change', async function(v) {
     mic.open().then(() => { // promise resolves when input is available
     console.log("start recording mic");
     record();
-    setInterval(() => {pitch.getPitch(function(err, frequency) {
+    setInterval(() => {pitchDetect.getPitch(function(err, frequency) {
       console.log(frequency);
     })}, 100);
     }).catch(e => {	// promise is rejected when the user doesn't have or allow mic access
