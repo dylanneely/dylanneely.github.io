@@ -272,7 +272,7 @@ async function newGrainBuf(userAudioIndex) { //set buffer
 const pitchDetector = ml5.pitchDetection(
   "./model/",
   actx,
-  mic,
+  mic.stream,
   modelLoaded
 );
 
