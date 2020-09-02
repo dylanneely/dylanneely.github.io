@@ -139,22 +139,23 @@ let rhythmSeed = [randomMIDIpitch(1, 2), randomMIDIpitch(1, 2),randomMIDIpitch(1
 console.log(seedChordMIDI, rhythmSeed)
 
 //CONNECT EVERYTHING UP
-const grainBusGain = new Tone.Gain(1);
-const synthBusGain = new Tone.Gain(1);
+const grainBusGain = new Tone.Gain(1).toDestination();
+const synthBusGain = new Tone.Gain(1).toDestination();
 const verbGain = new Tone.Gain(1).toDestination();
-const compressor = new Tone.Compressor(-40, 3).toDestination(); //master-bus compressor
-compressor.knee = 30;
-synthDrone.chain(sVolumeList[8], autoFilter, synthBusGain, verb, verbGain, compressor);
+const compressor = new Tone.Compressor(-20, 3); //master-bus compressor
+compressor.knee = 14;
+synthDrone.chain(sVolumeList[8], autoFilter, synthBusGain, compressor, verb, verbGain);
 synthDrone.chain(sVolumeList[8], autoFilter, synthBusGain);
 
 for (let i = 0; i < grainList.length; i++) { //handle grain and synth routing together
     grainList[i].chain(pitchShiftList[i], delayList[i], gFilterList[i], gVolumeList[i], grainBusGain, recDest); //avoid master-bus FX for recording
-    grainList[i].chain(pitchShiftList[i], delayList[i], gFilterList[i], gVolumeList[i], grainBusGain, verb, verbGain, compressor); //separate wet control for master-bus verb
+    grainList[i].chain(pitchShiftList[i], delayList[i], gFilterList[i], gVolumeList[i], grainBusGain, compressor, verb, verbGain); //separate wet control for master-bus verb
     grainList[i].sync();
     synthList[i].chain(phaserList[i], sFilterList[i], sVolumeList[i], synthBusGain);
-    synthList[i].chain(phaserList[i], sFilterList[i], sVolumeList[i], synthBusGain,  verb, verbGain, compressor);
+    synthList[i].chain(phaserList[i], sFilterList[i], sVolumeList[i], synthBusGain, compressor, verb, verbGain);
     synthList[i].sync();
   }
+
 
 //BUFFER VISUALIZATION - PROCESSING
 const cnvHeight = 200;
